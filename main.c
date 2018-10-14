@@ -96,12 +96,14 @@ int main(int argc, char *argv[]) {
 	    //Guardá palabra en la siguiente posición de palabrasAceptadas	    
 	}
 	
-	//Reinicializa todo para leer la siguiente palabra.
+	//Reinicializa todo para leer la siguiente palabra (deja palabra sin elementos y otras cosas propias del autómata).
 	palabra = 0;
 	tamanioPalabra = 0;
 	caracterActual = getchar();
 	estadoActual = tabla_transiciones[0][1];
-  }  
+  }
+  
+  //Muestra las palabras aceptadas listadas.
   
   free(palabra);
 
