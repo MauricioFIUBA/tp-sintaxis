@@ -26,30 +26,30 @@ char siguienteEstado(char estado, char caracter){
 	
 	unsigned i;	
 	for(i = 0; i < cantidadFilas; i++) {		
-    	if (tabla_transiciones[i, 0] == estado) {
+    	if (tabla_transiciones[i][0] == estado) {
         	posicionFilaEstado = i;
     	}    	
 	}
 	
 	for(i = 0; i < cantidadColumnas; i++){
-		if (tabla_transiciones[0, i] == caracter){
+		if (tabla_transiciones[0][i] == caracter){
     		posicionColumnaCaracter = i;
     		caracterEncontrado = 1;
 		}
 	}
 	
 	if(caracterEncontrado){
-		estadoSiguiente = tabla_transiciones[posicionFilaEstado, posicionColumnaCaracter];
+		estadoSiguiente = tabla_transiciones[posicionFilaEstado][posicionColumnaCaracter];
 	} else {
 		int columnaCaracterFueraDelAlfabeto;
 		unsigned i;
 		for(i = 0; i < cantidadColumnas; i++){
-			if(tabla_transiciones[0, i] == caracterFueraDelAlfabeto){
+			if(tabla_transiciones[0][i] == caracterFueraDelAlfabeto){
 				columnaCaracterFueraDelAlfabeto = i;
 			}
 		}
 		
-		estadoSiguiente = tabla_transiciones[posicionFilaEstado, columnaCaracterFueraDelAlfabeto];
+		estadoSiguiente = tabla_transiciones[posicionFilaEstado][columnaCaracterFueraDelAlfabeto];
 	}
 	
 	return estadoSiguiente;
@@ -73,7 +73,10 @@ int main(int argc, char *argv[]) {
   printf("Introducir una cadena:");
    
   char* palabra = 0;
+  char** palabrasAceptadas;
   int tamanioPalabra = 0;
+  int tamanioPalabrasAceptadas = 0;
+  //Leo primer caracter
   char caracterActual = getchar();
   char estadoActual = tabla_transiciones[0][1];  
   int cantidadPalabrasAceptadas = 0;  
@@ -85,13 +88,15 @@ int main(int argc, char *argv[]) {
   		estadoActual = siguienteEstado(estadoActual, caracterActual);
   		palabra[tamanioPalabra] = caracterActual;
   		tamanioPalabra++;
+  		//Leo siguiente caracter
   		caracterActual = getchar();
 	}
 	
 	if(esEstadoFinal(estadoActual)){
-		printf("Palabra aceptada: %s", &palabra);
+	    //Guardá palabra en la siguiente posición de palabrasAceptadas	    
 	}
 	
+	//Reinicializa todo para leer la siguiente palabra.
 	palabra = 0;
 	tamanioPalabra = 0;
 	caracterActual = getchar();
