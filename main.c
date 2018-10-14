@@ -5,7 +5,7 @@
 #define cantidadColumnas 14
 #define cantidadEstadosFinales 2
 const char tabla_transiciones[cantidadFilas][cantidadColumnas] = {
-	{NULL, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'F', '.', 'otro'},
+	{NULL, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'F', '.', '\t'},
 	{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '6', '6', '6'}, 
 	{'1', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '3', '4', '6'},
 	{'2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '3', '6', '6'},
@@ -17,7 +17,7 @@ const char tabla_transiciones[cantidadFilas][cantidadColumnas] = {
 const char estados_finales[cantidadEstadosFinales] = {'3', '4'};
 const char centinela = '#';
 const char fdt = '\n';
-const char caracterFueraDelAlfabeto = 'otro';
+const char caracterFueraDelAlfabeto = '\t';
 
 char siguienteEstado(char estado, char caracter){
 	int posicionFilaEstado, posicionColumnaCaracter;
@@ -73,10 +73,9 @@ int main(int argc, char *argv[]) {
   printf("Introducir una cadena:");
    
   char* palabra = 0;
-  char** palabrasAceptadas;
+  char* palabrasAceptadas = 0;
   int tamanioPalabra = 0;
   int tamanioPalabrasAceptadas = 0;
-  //Leo primer caracter
   char caracterActual = getchar();
   char estadoActual = tabla_transiciones[0][1];  
   int cantidadPalabrasAceptadas = 0;  
@@ -88,12 +87,19 @@ int main(int argc, char *argv[]) {
   		estadoActual = siguienteEstado(estadoActual, caracterActual);
   		palabra[tamanioPalabra] = caracterActual;
   		tamanioPalabra++;
-  		//Leo siguiente caracter
+  		//Lee siguiente caracter
   		caracterActual = getchar();
 	}
 	
 	if(esEstadoFinal(estadoActual)){
-	    //Guardá palabra en la siguiente posición de palabrasAceptadas	    
+	    //Guarda palabra en la siguiente posición de palabrasAceptadas
+		tamanioPalabrasAceptadas += tamanioPalabra + 1;
+		palabrasAceptadas = (char*)realloc(palabrasAceptadas, tamanioPalabrasAceptadas);
+		unsigned i;
+		for (i = 0; i < tamanioPalabra; i++){
+			palabrasAceptadas[tamanioPalabrasAceptadas - tamanioPalabra + i] = palabra[i];	
+		}
+		palabrasAceptadas[tamanioPalabrasAceptadas - 1] = '#';		
 	}
 	
 	//Reinicializa todo para leer la siguiente palabra (deja palabra sin elementos y otras cosas propias del autómata).
@@ -104,8 +110,23 @@ int main(int argc, char *argv[]) {
   }
   
   //Muestra las palabras aceptadas listadas.
+  printf("Cantidad de palabras aceptadas: %d", tamanioPalabrasAceptadas);
+  
+  if (tamanioPalabrasAceptadas > 0){
+  	printf("Palabras aceptadas: ");
+  	unsigned i;
+  	for (i = 0; i < tamanioPalabrasAceptadas; i++){
+  		if (palabrasAceptadas[i] == '#'){
+  			printf("\n");
+		} else {
+			printf("%c", palabrasAceptadas[i]);
+		}
+	}
+  }
+  
   
   free(palabra);
+  free(palabrasAceptadas);
 
    return 0;
 }
