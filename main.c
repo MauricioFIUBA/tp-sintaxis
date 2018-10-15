@@ -78,12 +78,13 @@ int main(int argc, char *argv[]) {
   int tamanioPalabrasAceptadas = 0;
   char caracterActual = getchar();
   char estadoActual = tabla_transiciones[0][1];  
-  int cantidadPalabrasAceptadas = 0;  
+  int cantidadPalabrasAceptadas = 0;
+  int cantidadPalabras = 0;
   
   while(caracterActual != fdt){  	
   	palabra = (char*)realloc(palabra, tamanioPalabra + 1);  	
   	
-  	while(estadoActual != centinela && caracterActual != fdt){
+  	while(caracterActual != centinela && caracterActual != fdt){
   		estadoActual = siguienteEstado(estadoActual, caracterActual);
   		palabra[tamanioPalabra] = caracterActual;
   		tamanioPalabra++;
@@ -97,12 +98,17 @@ int main(int argc, char *argv[]) {
 		palabrasAceptadas = (char*)realloc(palabrasAceptadas, tamanioPalabrasAceptadas);
 		unsigned i;
 		for (i = 0; i < tamanioPalabra; i++){
-			palabrasAceptadas[tamanioPalabrasAceptadas - tamanioPalabra + i] = palabra[i];	
+			palabrasAceptadas[tamanioPalabrasAceptadas - tamanioPalabra + i - 1] = palabra[i];	
 		}
-		palabrasAceptadas[tamanioPalabrasAceptadas - 1] = '#';		
+		palabrasAceptadas[tamanioPalabrasAceptadas - 1] = '#';
+		cantidadPalabras++;
 	}
 	
 	//Reinicializa todo para leer la siguiente palabra (deja palabra sin elementos y otras cosas propias del autómata).
+	if(caracterActual == fdt){
+	    break;
+	}
+	
 	palabra = 0;
 	tamanioPalabra = 0;
 	caracterActual = getchar();
@@ -110,7 +116,7 @@ int main(int argc, char *argv[]) {
   }
   
   //Muestra las palabras aceptadas listadas.
-  printf("Cantidad de palabras aceptadas: %d", tamanioPalabrasAceptadas);
+  printf("Cantidad de palabras aceptadas: %d\n", cantidadPalabras);
   
   if (tamanioPalabrasAceptadas > 0){
   	printf("Palabras aceptadas: ");
