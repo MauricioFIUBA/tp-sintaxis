@@ -4,8 +4,10 @@
 #define cantidadFilas 8
 #define cantidadColumnas 14
 #define cantidadEstadosFinales 2
+#define NUL 0
+
 const char tabla_transiciones[cantidadFilas][cantidadColumnas] = {
-	{NULL, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'F', '.', '\t'},
+	{NUL, '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'F', '.', '\t'},
 	{'0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '6', '6', '6'}, 
 	{'1', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '3', '4', '6'},
 	{'2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '2', '3', '6', '6'},
@@ -14,6 +16,7 @@ const char tabla_transiciones[cantidadFilas][cantidadColumnas] = {
 	{'5', '6', '3', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6'},
 	{'6', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6', '6'},
 };
+
 const char estados_finales[cantidadEstadosFinales] = {'3', '4'};
 const char centinela = '#';
 const char fdt = '\n';
